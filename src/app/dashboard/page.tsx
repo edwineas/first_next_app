@@ -3,11 +3,8 @@ import React, { useState } from 'react';
 import { Sidebar } from './components/sidebar';
 import MainContent from './components/MainContent';
 
-interface LayoutProps {
-  children?: React.ReactNode;
-}
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const [organizations, setOrganizations] = useState([]);
   const [hasFetched, setHasFetched] = useState(false);
 
