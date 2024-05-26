@@ -3,16 +3,32 @@ import React, { useState } from 'react';
 import { Sidebar } from './sidebar';
 import MainContent from './MainContent';
 
-const Layout: React.FC = () => {
+const Layout = () => {
   const [organizations, setOrganizations] = useState([]);
   const [hasFetched, setHasFetched] = useState(false);
 
   const fetchOrganizations = async () => {
-    console.log('fetching organizations');
     const response = await fetch('/api/organizations');
-    const data = await response.json();
-    setOrganizations(data);
-    setHasFetched(true);
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+
+    const data = await response.text();
+
+    if (!data) {
+      console.error('No data returned from /api/organizations');
+      return;
+    }
+
+    try {
+      const jsonData = JSON.parse(data);
+      setOrganizations(jsonData);
+      setHasFetched(true);
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+    }
   };
 
   return (
